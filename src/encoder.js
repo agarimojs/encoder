@@ -1,6 +1,16 @@
 const { LRUCache } = require('@agarimo/lru-cache');
 const { processor } = require('./helpers');
 
+function findStemmer(obj) {
+  const keys = Object.keys(obj);
+  for (let i = 0; i < keys.length; i += 1) {
+    if (keys[i].startsWith('Stemmer')) {
+      return obj[keys[i]];
+    }
+  }
+  return undefined;
+}
+
 class Encoder {
   constructor(settings = {}) {
     this.processor = settings.processor || processor;
