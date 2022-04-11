@@ -4,6 +4,13 @@ const { processor } = require('./helpers');
 class Encoder {
   constructor(settings = {}) {
     this.processor = settings.processor || processor;
+    if (typeof this.processor === 'object') {
+      const Stemmer = findStemmer(this.processor);
+      if (Stemmer) {
+        this.stemmer = new Stemmer();
+      }
+      this.processor = this.stemmer.tokenizeAndStem.bind(this.stemmer);
+    }
     this.unknownIndex = settings.unknownIndex;
     this.useCache = settings.useCache === undefined ? true : settings.useCache;
     this.cacheSize = settings.cacheSize || 1000;
