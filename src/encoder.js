@@ -81,6 +81,23 @@ class Encoder {
     return result;
   }
 
+  processTextFull(text) {
+    const result = { data: {}, keys: [] };
+    const feats = this.processor ? this.processor(text) : text;
+    for (let i = 0; i < feats.length; i += 1) {
+      const feature = feats[i];
+      let index = this.getFeatureIndex(feature);
+      if (index === undefined) {
+        index = this.unknownIndex;
+      }
+      if (index !== undefined) {
+        result.data[index] = 1;
+        result.keys.push(index);
+      }
+    }
+    return result;
+  }
+
   processIntent(intent) {
     const index = this.getIntentIndex(intent);
     if (index === undefined) {
